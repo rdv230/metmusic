@@ -15,6 +15,8 @@ public class TestingArc : MonoBehaviour {
 
 	public GameObject TextObject;
 	public string chordText;
+	public string cText;
+	public GameObject minorTextObj;
 
 	// Use this for initialization
 	void Start () {
@@ -32,9 +34,15 @@ public class TestingArc : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		//chordText is the text on the Screen ,NOT including the minor "m" symbol
+		chordText = ChangeChordText();
+		TextObject.GetComponent<Text>().text = chordText;
+
+
+		//Debug Purposes if we activate the pointer and the old canvas
 		gameObject.transform.rotation = gyro.attitude;
 
-		TextObject.GetComponent<Text>().text = chordText;
 
 		if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began){
 			hasTouched = true;
@@ -51,19 +59,19 @@ public class TestingArc : MonoBehaviour {
 			playSwipe = true;
 		}
 
-
-
-
-		if(hasTouched||playSwipe){
 			if(transform.rotation.x > 0 && transform.rotation.x <= 1){
-				PlaySound(MajorChords);
-			}else{
-				PlaySound(MinorChords);
-				chordText = chordText + "m";
+				minorTextObj.SetActive(false);
+				if(hasTouched||playSwipe){
+					PlaySound(MajorChords);
+			}}else{
+				minorTextObj.SetActive(true);
+				if(hasTouched||playSwipe){
+					PlaySound(MinorChords);
+				}
 			}
-
-		}
 		Debug.Log(transform.rotation);
+
+
 
 	}
 
@@ -71,32 +79,51 @@ public class TestingArc : MonoBehaviour {
 
 		if(transform.rotation.z <= 1 && transform.rotation.z > 0.715){
 			myAudio.PlayOneShot(currentChords[0]);
-			chordText = "A";
 
 		}else if(transform.rotation.z <= 0.715 && transform.rotation.z > 0.43){
 			myAudio.PlayOneShot(currentChords[1]);
-			chordText = "B";
 
 		}else if(transform.rotation.z <= 0.43 && transform.rotation.z > 0.145){ 
 			myAudio.PlayOneShot(currentChords[2]);
-			chordText = "C";
 
 		}else if(transform.rotation.z <= 0.145 && transform.rotation.z > -0.14){
 			myAudio.PlayOneShot(currentChords[3]);
-			chordText = "D";
 
 		}else if(transform.rotation.z <= -0.14 && transform.rotation.z > -0.425){
 			myAudio.PlayOneShot(currentChords[4]);
-			chordText = "E";
 
 		}else if(transform.rotation.z <= -0.425 && transform.rotation.z > -0.71){
 			myAudio.PlayOneShot(currentChords[5]);
-			chordText = "F";
 
 		}else if(transform.rotation.z <= -0.71 && transform.rotation.z > -1){
 			myAudio.PlayOneShot(currentChords[6]);
-			chordText = "G";
 		}
 		playSwipe = false;
+	}
+
+	string ChangeChordText(){
+
+			if(transform.rotation.z <= 1 && transform.rotation.z > 0.715){
+				cText = "A";
+
+			}else if(transform.rotation.z <= 0.715 && transform.rotation.z > 0.43){
+				cText = "B";
+
+			}else if(transform.rotation.z <= 0.43 && transform.rotation.z > 0.145){ 
+				cText = "C";
+
+			}else if(transform.rotation.z <= 0.145 && transform.rotation.z > -0.14){
+				cText = "D";
+
+			}else if(transform.rotation.z <= -0.14 && transform.rotation.z > -0.425){
+				cText = "E";
+
+			}else if(transform.rotation.z <= -0.425 && transform.rotation.z > -0.71){
+				cText = "F";
+
+			}else if(transform.rotation.z <= -0.71 && transform.rotation.z >= -1){
+				cText = "G";
+			}
+		return cText;
 	}
 }
