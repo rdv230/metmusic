@@ -18,6 +18,9 @@ public class TestingArc : MonoBehaviour {
 	public string cText;
 	public GameObject minorTextObj;
 
+	bool justPlayed;
+	float time2PlayAgain;
+
 	// Use this for initialization
 	void Start () {
 		hasTouched = false;
@@ -38,17 +41,20 @@ public class TestingArc : MonoBehaviour {
 		//chordText is the text on the Screen ,NOT including the minor "m" symbol
 		chordText = ChangeChordText();
 		TextObject.GetComponent<Text>().text = chordText;
+		minorTextObj.GetComponent<Text>().text = chordText+"m";
 
 
 		//Debug Purposes if we activate the pointer and the old canvas
 		gameObject.transform.rotation = gyro.attitude;
 
-
-		if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began){
-			hasTouched = true;
-		} else{
-			hasTouched = false;
+		if(Input.touchCount > 0){
+			Debug.Log(Input.GetTouch(0).position);
 		}
+//		if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began){
+//			hasTouched = true;
+//		} else{
+//			hasTouched = false;
+//		}
 
 		if(!playSwipe && !hasSwiped && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved){
 				hasSwiped = true;
@@ -58,45 +64,64 @@ public class TestingArc : MonoBehaviour {
 			hasSwiped = false;
 			playSwipe = true;
 		}
+			
 
-			if(transform.rotation.x > 0 && transform.rotation.x <= 1){
-				minorTextObj.SetActive(false);
-				if(hasTouched||playSwipe){
-					PlaySound(MajorChords);
-			}}else{
-				minorTextObj.SetActive(true);
-				if(hasTouched||playSwipe){
-					PlaySound(MinorChords);
+		Vector3 dir = Vector3.zero;
+		dir.x = Input.acceleration.x;
+		dir.z = Input.acceleration.z;
+
+		if(!justPlayed){
+
+		if(dir.x < 0 &&dir.sqrMagnitude> 0.4f){
+			Debug.Log("dir.x: "+ dir.x);
+
+
+			float soundLevel = Mathf.Clamp01(Mathf.Abs(dir.x));
+			Debug.Log("SoundLevel: "+soundLevel);
+//		if(hasTouched||playSwipe){
+//			if(Input.GetTouch(0).position.x <= 89){
+			PlaySound(MajorChords, soundLevel);
 				}
+		}
+
+		if(justPlayed){
+			time2PlayAgain+= Time.deltaTime;
+
+			if(time2PlayAgain >= 0.1f){
+				justPlayed = true;
+				time2PlayAgain = 0;
 			}
-		Debug.Log(transform.rotation);
-
-
-
+		}
+			
+//			if(Input.GetTouch(0).position.x > 89){
+//				
+//					PlaySound(MinorChords);
+//				}
 	}
+		
 
-	void PlaySound(AudioClip[] currentChords){
+	void PlaySound(AudioClip[] currentChords,float volumeScale){
 
 		if(transform.rotation.z <= 1 && transform.rotation.z > 0.715){
-			myAudio.PlayOneShot(currentChords[0]);
+			myAudio.PlayOneShot(currentChords[0],volumeScale);
 
 		}else if(transform.rotation.z <= 0.715 && transform.rotation.z > 0.43){
-			myAudio.PlayOneShot(currentChords[1]);
+			myAudio.PlayOneShot(currentChords[1],volumeScale);
 
 		}else if(transform.rotation.z <= 0.43 && transform.rotation.z > 0.145){ 
-			myAudio.PlayOneShot(currentChords[2]);
+			myAudio.PlayOneShot(currentChords[2],volumeScale);
 
 		}else if(transform.rotation.z <= 0.145 && transform.rotation.z > -0.14){
-			myAudio.PlayOneShot(currentChords[3]);
+			myAudio.PlayOneShot(currentChords[3],volumeScale);
 
 		}else if(transform.rotation.z <= -0.14 && transform.rotation.z > -0.425){
-			myAudio.PlayOneShot(currentChords[4]);
+			myAudio.PlayOneShot(currentChords[4],volumeScale);
 
 		}else if(transform.rotation.z <= -0.425 && transform.rotation.z > -0.71){
-			myAudio.PlayOneShot(currentChords[5]);
+			myAudio.PlayOneShot(currentChords[5],volumeScale);
 
 		}else if(transform.rotation.z <= -0.71 && transform.rotation.z > -1){
-			myAudio.PlayOneShot(currentChords[6]);
+			myAudio.PlayOneShot(currentChords[6],volumeScale);
 		}
 		playSwipe = false;
 	}
@@ -125,5 +150,10 @@ public class TestingArc : MonoBehaviour {
 				cText = "G";
 			}
 		return cText;
+	}
+
+
+	void Sound(){
+		
 	}
 }
