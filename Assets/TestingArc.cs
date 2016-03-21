@@ -81,6 +81,7 @@ public class TestingArc : MonoBehaviour {
 //		if(hasTouched||playSwipe){
 //			if(Input.GetTouch(0).position.x <= 89){
 			PlaySound(MajorChords, soundLevel);
+			justPlayed = true;
 				}
 		}
 
@@ -88,7 +89,7 @@ public class TestingArc : MonoBehaviour {
 			time2PlayAgain+= Time.deltaTime;
 
 			if(time2PlayAgain >= 0.1f){
-				justPlayed = true;
+				justPlayed = false;
 				time2PlayAgain = 0;
 			}
 		}
