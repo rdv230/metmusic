@@ -9,6 +9,8 @@ public class TestingArc : MonoBehaviour {
 	AudioSource myAudio;
 	public AudioClip[] MajorChords;
 	public AudioClip[] MinorChords;
+	public Sprite[] pianoKeys;
+	public Image piano;
 	public bool hasTouched;
 	public bool hasSwiped;
 	public bool playSwipe;
@@ -43,7 +45,7 @@ public class TestingArc : MonoBehaviour {
 		//chordText is the text on the Screen ,NOT including the minor "m" symbol
 		chordText = ChangeChordText();
 		TextObject.GetComponent<Text>().text = chordText;
-		minorTextObj.GetComponent<Text>().text = chordText+"m";
+//		minorTextObj.GetComponent<Text>().text = chordText+"m";
 
 
 		//Debug Purposes if we activate the pointer and the old canvas
@@ -140,26 +142,35 @@ public class TestingArc : MonoBehaviour {
 
 		if(transform.rotation.z <= 1 && transform.rotation.z > 0.75){
 			cText = "A";
-
+			piano.sprite = pianoKeys[0];
 		}else if(transform.rotation.z <= 0.75 && transform.rotation.z > 0.5){
 			cText = "B";
+			piano.sprite = pianoKeys[1];
 
 		}else if(transform.rotation.z <= 0.5 && transform.rotation.z > 0.25){ 
 			cText = "C";
+			piano.sprite = pianoKeys[2];
 
 		}else if(transform.rotation.z <= 0.25 && transform.rotation.z > 0){
 			cText = "D";
+			piano.sprite = pianoKeys[3];
 
 		}else if(transform.rotation.z <= 0 && transform.rotation.z > -0.25){
 			cText = "E";
+			piano.sprite = pianoKeys[4];
 
 		}else if(transform.rotation.z <= -0.25 && transform.rotation.z > -0.5){
 			cText = "F";
+			piano.sprite = pianoKeys[5];
 
 		}else if(transform.rotation.z <= -0.5 && transform.rotation.z >= -0.75){
 			cText = "G";
+			piano.sprite = pianoKeys[6];
+
 		}else if(transform.rotation.z <= -0.75 && transform.rotation.z >= -1){
 			cText = "C";
+			piano.sprite = pianoKeys[7];
+
 		}
 		return cText;
 	}
