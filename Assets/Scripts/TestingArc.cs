@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class TestingArc : MonoBehaviour {
 
-
+	public GameObject Toggler;
 	Gyroscope gyro;
 	AudioSource myAudio;
 	public AudioClip[] MajorChords;
@@ -52,7 +52,7 @@ public class TestingArc : MonoBehaviour {
 		gameObject.transform.rotation = gyro.attitude;
 
 		if(Input.touchCount > 0){
-			Debug.Log(Input.GetTouch(0).position);
+		//	Debug.Log(Input.GetTouch(0).position);
 		}
 //		if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began){
 //			hasTouched = true;
@@ -85,7 +85,10 @@ public class TestingArc : MonoBehaviour {
 				Debug.Log("dir: "+ dir);
 				float soundLevel = Mathf.Clamp01(Mathf.Abs(dir.z * 0.2f));
 				Debug.Log("SoundLevel: "+soundLevel);
+				Toggler.GetComponent<Toggler>().PlayAnim();
+
 				PlaySound(MajorChords, soundLevel);
+
 				dir = Vector3.zero;
 				justPlayed = true;
 			}
@@ -141,34 +144,34 @@ public class TestingArc : MonoBehaviour {
 	string ChangeChordText(){
 
 		if(transform.rotation.z <= 1 && transform.rotation.z > 0.75){
-			cText = "A";
+			cText = "Chord: A";
 			piano.sprite = pianoKeys[0];
 		}else if(transform.rotation.z <= 0.75 && transform.rotation.z > 0.5){
-			cText = "B";
+			cText = "Chord: B";
 			piano.sprite = pianoKeys[1];
 
 		}else if(transform.rotation.z <= 0.5 && transform.rotation.z > 0.25){ 
-			cText = "C";
+			cText = "Chord: C";
 			piano.sprite = pianoKeys[2];
 
 		}else if(transform.rotation.z <= 0.25 && transform.rotation.z > 0){
-			cText = "D";
+			cText = "Chord: D";
 			piano.sprite = pianoKeys[3];
 
 		}else if(transform.rotation.z <= 0 && transform.rotation.z > -0.25){
-			cText = "E";
+			cText = "Chord: E";
 			piano.sprite = pianoKeys[4];
 
 		}else if(transform.rotation.z <= -0.25 && transform.rotation.z > -0.5){
-			cText = "F";
+			cText = "Chord: F";
 			piano.sprite = pianoKeys[5];
 
 		}else if(transform.rotation.z <= -0.5 && transform.rotation.z >= -0.75){
-			cText = "G";
+			cText = "Chord: G";
 			piano.sprite = pianoKeys[6];
 
 		}else if(transform.rotation.z <= -0.75 && transform.rotation.z >= -1){
-			cText = "C";
+			cText = "Chord: C";
 			piano.sprite = pianoKeys[7];
 
 		}
