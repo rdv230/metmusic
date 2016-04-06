@@ -18,7 +18,7 @@ public class TutorialChange : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		Debug.Log (tutorialText);
+//		Debug.Log (tutorialText);
 
 		GetComponent<Text>().text = tutorialTexts[tutorialText];
 
