@@ -24,6 +24,9 @@ public class TestingArc : MonoBehaviour {
 	bool justPlayed;
 	float time2PlayAgain;
 
+	public GameObject spark;
+	public GameObject mechanism;
+
 	// Use this for initialization
 	void Start () {
 		dir = Vector3.zero;
@@ -139,6 +142,10 @@ public class TestingArc : MonoBehaviour {
 		}
 	
 		playSwipe = false;
+		if (mechanism.activeSelf == true)
+		{
+			Instantiate(spark);
+		}
 	}
 
 	string ChangeChordText(){
