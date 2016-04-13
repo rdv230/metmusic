@@ -2,30 +2,29 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class ChordController : MonoBehaviour {
+public class TestingArc : MonoBehaviour {
 
-	//GameObject
 	public GameObject Toggler;
-	public GameObject TextObject;
-
-	//Gyroscope 
 	Gyroscope gyro;
-	Vector3 dir;
-
-	//AudioSource and AudioClip
 	AudioSource myAudio;
 	public AudioClip[] MajorChords;
+	public AudioClip[] MinorChords;
 	public Sprite[] pianoKeys;
 	public Image piano;
+	public bool hasTouched;
+	public bool hasSwiped;
+	public bool playSwipe;
 
-	//Text Object
+	public GameObject TextObject;
 	public string chordText;
 	public string cText;
+	public GameObject minorTextObj;
+	Vector3 dir;
 
-	//Time Variables
 	bool justPlayed;
 	float time2PlayAgain;
 
+<<<<<<< HEAD:Assets/Scripts/ChordController.cs
 <<<<<<< HEAD:Assets/Scripts/TestingArc.cs
 	public GameObject spark;
 	public GameObject mechanism;
@@ -33,8 +32,14 @@ public class ChordController : MonoBehaviour {
 	// Use this for initialization
 =======
 >>>>>>> origin/master:Assets/Scripts/ChordController.cs
+=======
+	// Use this for initialization
+>>>>>>> origin/master:Assets/Scripts/TestingArc.cs
 	void Start () {
 		dir = Vector3.zero;
+		hasTouched = false;
+		hasSwiped = false;
+		playSwipe = false;
 		myAudio = GetComponent<AudioSource>();
 
 		gyro = Input.gyro;
@@ -43,21 +48,50 @@ public class ChordController : MonoBehaviour {
 		}
 
 	}
-
+	
+	// Update is called once per frame
 	void Update () {
 
+		//chordText is the text on the Screen ,NOT including the minor "m" symbol
 		chordText = ChangeChordText();
 		TextObject.GetComponent<Text>().text = chordText;
+//		minorTextObj.GetComponent<Text>().text = chordText+"m";
 
+
+		//Debug Purposes if we activate the pointer and the old canvas
 		gameObject.transform.rotation = gyro.attitude;
 
+		if(Input.touchCount > 0){
+		//	Debug.Log(Input.GetTouch(0).position);
+		}
+//		if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began){
+//			hasTouched = true;
+//		} else{
+//			hasTouched = false;
+//		}
+
+		if(!playSwipe && !hasSwiped && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved){
+				hasSwiped = true;
+			}
+
+		if(Input.touchCount > 0 && hasSwiped && Input.GetTouch(0).phase == TouchPhase.Stationary){
+			hasSwiped = false;
+			playSwipe = true;
+		}
+			
+//
+//		dir = Vector3.zero;
+//		dir.x = Input.acceleration.x;
+//		dir.z = Input.acceleration.z;
+//
 		if(!justPlayed){
 			dir = Vector3.zero;
 			dir.x = Input.acceleration.x;
 			dir.z = Input.acceleration.z;
-
-
+			//If I keep the dual check of x and z axis it might sounds a little off because not everytime you move you hit a key
+			//If I remove the z axis one it plays forever.
 			if(dir.x < 0f && dir.z < -1.3f && dir.sqrMagnitude> 0.8f){
+//				|| dir.x < -1.3f && dir.z < 0f && dir.sqrMagnitude >0.8f){
 				Debug.Log("dir: "+ dir);
 				float soundLevel = Mathf.Clamp01(Mathf.Abs(dir.z * 0.2f));
 				Debug.Log("SoundLevel: "+soundLevel);
@@ -80,6 +114,11 @@ public class ChordController : MonoBehaviour {
 				time2PlayAgain = 0;
 			}
 		}
+			
+//			if(Input.GetTouch(0).position.x > 89){
+//				
+//					PlaySound(MinorChords);
+//				}
 	}
 		
 
@@ -108,6 +147,7 @@ public class ChordController : MonoBehaviour {
 		}else if(transform.rotation.z <= -0.75 && transform.rotation.z > -1){
 			myAudio.PlayOneShot(currentChords[7],volumeScale);
 		}
+<<<<<<< HEAD:Assets/Scripts/ChordController.cs
 <<<<<<< HEAD:Assets/Scripts/TestingArc.cs
 	
 		playSwipe = false;
@@ -117,6 +157,10 @@ public class ChordController : MonoBehaviour {
 		}
 =======
 >>>>>>> origin/master:Assets/Scripts/ChordController.cs
+=======
+	
+		playSwipe = false;
+>>>>>>> origin/master:Assets/Scripts/TestingArc.cs
 	}
 
 	string ChangeChordText(){
@@ -154,5 +198,10 @@ public class ChordController : MonoBehaviour {
 
 		}
 		return cText;
+	}
+
+
+	void Sound(){
+		
 	}
 }
