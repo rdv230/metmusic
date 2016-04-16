@@ -3,7 +3,6 @@ using System.Collections;
 
 public class SparkManager : MonoBehaviour {
 
-	public TestingArc testingArc;
 
 	// Use this for initialization
 	void Start () {
