@@ -30,15 +30,15 @@ public class buttonManager : MonoBehaviour {
 
 	public void TriggerAnimation(string name)
 	{
-
+		Debug.Log (canvases.GetBool("Hit"));
 		if (name == "Hit")
 		{
-			canvases.SetBool("Hit", false);
+			canvases.SetBool("Hit", true);
 		}
 
 		if (name == "Play")
 		{
-			canvases.SetBool("Hit", true);
+			canvases.SetBool("Hit", false);
 		}
 	}
 
