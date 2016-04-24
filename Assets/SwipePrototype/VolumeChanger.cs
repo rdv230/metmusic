@@ -20,6 +20,10 @@ public class VolumeChanger : MonoBehaviour {
 
 	bool keyPressed;
 
+	public bool isMechanismScreen;
+	public Animator mechanism;
+	public AudioClip[] randomChords;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -36,13 +40,34 @@ public class VolumeChanger : MonoBehaviour {
 
 			if (pressTimer > 0.2f)
 			{
-				transform.parent.GetComponent<SpriteRenderer>().sprite = Original;
+				if (!isMechanismScreen)
+				{
+					transform.parent.GetComponent<SpriteRenderer>().sprite = Original;
+				}
+				else
+				{
+					GetComponent<SpriteRenderer>().sprite = Original;
+				}
 			}
 
 			if (pressTimer > 0.5f)
 			{
-				transform.parent.GetComponent<SpriteRenderer>().sprite = Original;
+				if (!isMechanismScreen)
+				{
+					transform.parent.GetComponent<SpriteRenderer>().sprite = Original;
+				}
+				else
+				{
+					GetComponent<SpriteRenderer>().sprite = Original;
+					mechanism.enabled = false;
+
+				}
 				keyPressed = false;
+
+//				if (isMechanismScreen)
+//				{
+//					mechanism.enabled = false;
+//				}
 			}
 		}
 	}
@@ -53,15 +78,20 @@ public class VolumeChanger : MonoBehaviour {
 		startPos.z = transform.position.z - Camera.main.transform.position.z;
 		startPos = Camera.main.ScreenToWorldPoint(startPos);
 
-		transform.parent.GetComponent<SpriteRenderer>().sprite = KeyPressed;
+		if(!isMechanismScreen)
+		{
+			transform.parent.GetComponent<SpriteRenderer>().sprite = KeyPressed;
+		}
+		else
+		{
+			GetComponent<SpriteRenderer>().sprite = KeyPressed;
+		}
 
 		pressTimer = 0;
 
 	}
 
 	void OnMouseUp() {
-
-
 
 		Vector3 endPos = Input.mousePosition;
 		endPos.z = transform.position.z - Camera.main.transform.position.z;
@@ -71,6 +101,16 @@ public class VolumeChanger : MonoBehaviour {
 		force.z = force.magnitude;
 		force /= (Time.time - startTime);
 
+		if (!isMechanismScreen)
+		{
+			transform.parent.GetComponent<SpriteRenderer>().sprite = KeyJustPressed;
+		}
+		else
+		{
+			GetComponent<SpriteRenderer>().sprite = KeyJustPressed;
+			GetComponent<AudioSource>().clip = randomChords[Random.Range(0,4)];
+		}
+
 		GetComponent<AudioSource>().volume = Mathf.Abs(force.y)/15;
 		GetComponent<AudioSource>().Play();
 
@@ -78,6 +118,9 @@ public class VolumeChanger : MonoBehaviour {
 
 		volumeSlider.GetComponent<Image>().fillAmount = Mathf.Lerp(volumeSlider.GetComponent<Image>().fillAmount, GetComponent<AudioSource>().volume, Time.deltaTime * 50);
 
-		transform.parent.GetComponent<SpriteRenderer>().sprite = KeyJustPressed;
+		if (isMechanismScreen)
+		{
+			mechanism.enabled = true;
+		}
 	}
 }

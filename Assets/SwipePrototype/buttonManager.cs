@@ -4,51 +4,47 @@ using UnityEngine.UI;
 
 public class buttonManager : MonoBehaviour {
 
-	public Animator canvases;
+	public Animator AppCanvases;
 
-	bool OnMouseOver = true;
+	public ScreenManager screens;
 
 	// Use this for initialization
 	void Start () {
-	
-	
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-	
-		if (OnMouseOver)
-		{
-			if (Input.GetMouseButtonDown(0))
-			{
-				TriggerAnimation(gameObject.name);
-			}
-		}
+	}
+
+
+	void OnMouseDown()
+	{
+		TriggerAnimation(gameObject.name);
 	}
 
 	public void TriggerAnimation(string name)
 	{
-		Debug.Log (canvases.GetBool("Hit"));
 		if (name == "Hit")
 		{
-			canvases.SetBool("Hit", true);
+			AppCanvases.SetBool("Hit", true);
 		}
 
 		if (name == "Play")
 		{
-			canvases.SetBool("Hit", false);
+			AppCanvases.SetBool("Hit", false);
+		}
+
+		if (name == "Piano")
+		{
+			screens.MovePlayCanvas("In");
+		}
+
+		if (name == "PlayInstrument")
+		{
+			screens.MoveGameCanvas("In");
 		}
 	}
 
-	void OnMouseEnter()
-	{
-		OnMouseOver = true;
-	}
-
-	void OnMouseExit()
-	{
-		OnMouseOver = false;
-	}
 }
