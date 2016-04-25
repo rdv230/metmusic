@@ -12,12 +12,16 @@ public class ScreenManager : MonoBehaviour {
 
 	public Transform comeInGame;
 	public Transform comeOutGame;
+	public Transform playGame;
+	public Transform hitGame;
 
 	public Transform comeInConstant;
 	public Transform comeOutConstant;
 
 	bool movingGameCanvasIn;
 	bool movingPlayCanvasIn;
+
+	bool hitting;
 
 	// Use this for initialization
 	void Start () {
@@ -29,8 +33,18 @@ public class ScreenManager : MonoBehaviour {
 
 		if (movingGameCanvasIn)
 		{
-			GameCanvas.transform.position = Vector2.MoveTowards(GameCanvas.transform.position, comeInGame.position, 20*Time.deltaTime);
-			constantCanvas.transform.position = Vector2.MoveTowards(constantCanvas.transform.position, comeInConstant.position, 20*Time.deltaTime);
+			GameCanvas.transform.position = Vector2.MoveTowards(GameCanvas.transform.position, comeInGame.position, 10*Time.deltaTime);
+			constantCanvas.transform.position = Vector2.MoveTowards(constantCanvas.transform.position, comeInConstant.position, 50*Time.deltaTime);
+
+			if (hitting)
+			{
+				GameCanvas.transform.position = Vector2.MoveTowards(GameCanvas.transform.position, hitGame.position, 20*Time.deltaTime);
+			}
+
+			else
+			{
+				GameCanvas.transform.position = Vector2.MoveTowards(GameCanvas.transform.position, comeInGame.position, 10*Time.deltaTime);
+			}
 		}
 		else
 		{
@@ -54,13 +68,13 @@ public class ScreenManager : MonoBehaviour {
 	{
 		if (dir == "Out")
 		{
-			GameCanvas.GetComponent<Animator>().enabled = false;
+			//GameCanvas.GetComponent<Animator>().enabled = false;
 			movingGameCanvasIn = false;
 		}
 
 		if (dir == "In")
 		{
-//			GameCanvas.GetComponent<Animator>().enabled = true;
+			//GameCanvas.GetComponent<Animator>().enabled = true;
 			movingGameCanvasIn = true;
 		}
 	}
@@ -76,6 +90,19 @@ public class ScreenManager : MonoBehaviour {
 		if (dir == "In")
 		{
 			movingPlayCanvasIn = true;
+		}
+	}
+
+	public void HammerPianoToggle(string dir)
+	{
+		if (dir == "Hit")
+		{
+			hitting = false;
+		}
+
+		if (dir == "Play")
+		{
+			hitting = true;
 		}
 	}
 		
