@@ -7,6 +7,7 @@ public class buttonManager : MonoBehaviour {
 	public ScreenManager screens;
 
 	public GameObject playInstrument;
+	public GameObject cristofori;
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +44,7 @@ public class buttonManager : MonoBehaviour {
 		if (name == "Piano")
 		{
 			screens.MovePlayCanvas("In");
+			cristofori.GetComponent<BoxCollider2D>().enabled = false;
 		}
 
 		if (name == "PlayInstrument")
@@ -54,6 +56,8 @@ public class buttonManager : MonoBehaviour {
 		if (name == "Play-X")
 		{
 			screens.MovePlayCanvas("Out");
+			cristofori.GetComponent<BoxCollider2D>().enabled = true;
+
 		}
 
 		if (name == "Game-X")
