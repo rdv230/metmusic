@@ -22,8 +22,12 @@ public class VolumeChanger : MonoBehaviour {
 
 	public bool isMechanismScreen;
 	public Animator mechanism;
+	public GameObject SoundSpark;
+	public Transform soundSpot;
+
 	public AudioClip[] randomChords;
 
+	public float volumeForce;
 	// Use this for initialization
 	void Start () {
 	
@@ -111,7 +115,12 @@ public class VolumeChanger : MonoBehaviour {
 			GetComponent<AudioSource>().clip = randomChords[Random.Range(0,4)];
 		}
 
-		GetComponent<AudioSource>().volume = Mathf.Abs(force.y)/15;
+		volumeForce = Mathf.Abs(force.y)/15;
+		if (volumeForce < 0.3f)
+		{
+			volumeForce = 0.3f;
+		}
+		GetComponent<AudioSource>().volume = volumeForce;
 		GetComponent<AudioSource>().Play();
 
 		keyPressed = true;
@@ -121,6 +130,8 @@ public class VolumeChanger : MonoBehaviour {
 		if (isMechanismScreen)
 		{
 			mechanism.enabled = true;
+			GameObject soundClone = Instantiate(SoundSpark, soundSpot.position, soundSpot.rotation) as GameObject;
+
 		}
 	}
 }
